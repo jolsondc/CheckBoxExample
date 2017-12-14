@@ -41,10 +41,14 @@ example:-
 ```
 
 *Attributes :*
+
 orientation - 1-vertical
               2-horizontal
+              
 text_color - checkbx textcolor
+
 checkbox_array - string array of checkbox text string
+
 multi_select- true :multi select is enabled
               false:single check is enabled 
 
