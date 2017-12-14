@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CheckBoxGroupExample</string>
+    <string-array name="rating">
+        <item>AVERAGE</item>
+        <item>GOOD</item>
+        <item>BAD</item>
+    </string-array>
+</resources>

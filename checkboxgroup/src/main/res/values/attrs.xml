@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="check_box_group">
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+        <attr name="text_color" format="color" />
+        <attr name="checkbox_array" format="reference" />
+        <attr name="multi_select" format="boolean" />
+    </declare-styleable>
+
+
+
+</resources>
