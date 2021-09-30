@@ -1,26 +1,24 @@
-package com.jolly.checkboxgroupexample;
+package com.jolly.checkboxgroupexample
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.jolly.checkboxgroup.CheckboxGroup
+import java.util.*
 
-import com.jolly.checkboxgroup.CheckboxGroup;
-
-import java.util.Arrays;
-
-public class MainActivity extends AppCompatActivity {
-    CheckboxGroup checkboxGroup;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        checkboxGroup = (CheckboxGroup) findViewById(R.id.checkbox);
-
-        checkboxGroup.onCheckBoxListener(new CheckboxGroup.onSelected() {
-            @Override
-            public void itemSelected(CheckboxGroup group, int pos, int[] checkedArray) {
-                Log.i("TAG", "View clicked id :" + pos+" Checkbox state :"+ Arrays.toString(checkedArray));
+class MainActivity : AppCompatActivity() {
+    var checkboxGroup: CheckboxGroup? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        checkboxGroup = findViewById(R.id.checkbox)
+        checkboxGroup!!.onCheckBoxListener(object : CheckboxGroup.OnSelected {
+            override fun itemSelected(group: CheckboxGroup?, pos: Int, checkedArray: IntArray?) {
+                Log.i(
+                    "TAG",
+                    "View clicked id :" + pos + " Checkbox state :" + Arrays.toString(checkedArray)
+                )
             }
-        });
+        })
     }
 }

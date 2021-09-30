@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CheckBoxExample.iml" filepath="$PROJECT_DIR$/CheckBoxExample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/checkboxgroup/checkboxgroup.iml" filepath="$PROJECT_DIR$/checkboxgroup/checkboxgroup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CheckBoxExample.iml" filepath="$PROJECT_DIR$/.idea/modules/CheckBoxExample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CheckBoxExample.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CheckBoxExample.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/checkboxgroup/CheckBoxExample.checkboxgroup.iml" filepath="$PROJECT_DIR$/.idea/modules/checkboxgroup/CheckBoxExample.checkboxgroup.iml" />
     </modules>
   </component>
 </project>

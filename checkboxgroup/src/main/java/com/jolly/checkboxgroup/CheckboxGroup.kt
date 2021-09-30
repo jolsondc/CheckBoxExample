@@ -1,136 +1,121 @@
-package com.jolly.checkboxgroup;
+package com.jolly.checkboxgroup
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.os.Build;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-
+import android.content.Context
+import android.widget.LinearLayout
+import android.content.res.TypedArray
+import android.os.Build
+import android.util.AttributeSet
+import android.view.View
+import android.widget.CheckBox
 
 /**
- * Created by CS251685 on 22-11-2017.
+ * Created by Jol.
  */
+class CheckboxGroup(private val mContext: Context, attrs: AttributeSet?) : LinearLayout(
+    mContext, attrs
+), View.OnClickListener {
+    private var onClick: OnSelected? = null
+    private var checkBox = arrayOfNulls<CheckBox>(1)
+    private var title : TypedArray? = null
+    private val mCheckTextColor: Int
+    private var arrayPassed = false
+    private var multiSelect = true
+    private val checkedArray: IntArray
+    private lateinit var name:String
 
-public class CheckboxGroup extends LinearLayout implements View.OnClickListener {
-    private onSelected onClick;
-    private CheckBox[] checkBox = new CheckBox[1];
-    private TypedArray title;//= new String[3];
-    private int mCheckTextColor;
-    private Context mContext;
-    private boolean arrayPassed = false,multiSelect=true;
-    private int[] checkedArray ;
-    private int orientation=0;
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        init(getContext());
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        init(context)
     }
 
-    public CheckboxGroup(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.mContext = context;
-        TypedArray attr = context.obtainStyledAttributes(attrs, R.styleable.check_box_group, 0, 0);
-        final int arrayResourceId = attr.getResourceId(
-                R.styleable.check_box_group_checkbox_array, 0);
+    private fun init(context: Context) {
+        orientation = orientation
+        initializeCheckbox(context)
+    }
+
+    init {
+        val attr = mContext.obtainStyledAttributes(attrs, R.styleable.check_box_group, 0, 0)
+        val arrayResourceId = attr.getResourceId(
+            R.styleable.check_box_group_checkbox_array, 0
+        )
         if (arrayResourceId != 0) {
-            arrayPassed = true;
-            title = context.getResources().obtainTypedArray(arrayResourceId);
-
-            checkBox = new CheckBox[title.length()];
-
+            arrayPassed = true
+            title = mContext.resources.obtainTypedArray(arrayResourceId)
+            checkBox = arrayOfNulls(title!!.length())
         }
-        orientation =attr.getInt(R.styleable.check_box_group_orientation,0);
-        multiSelect =attr.getBoolean(R.styleable.check_box_group_text_color, true);
-          mCheckTextColor = attr.getColor(R.styleable.check_box_group_text_color, 0);
-        checkedArray = new int[checkBox.length];
-        Log.i("TAG","checkbox :"+orientation);
-        attr.recycle();
-
+        orientation = attr.getInt(R.styleable.check_box_group_orientation, 0)
+        multiSelect = attr.getBoolean(R.styleable.check_box_group_multi_select, true)
+        mCheckTextColor = attr.getColor(R.styleable.check_box_group_text_color, 0)
+        checkedArray = IntArray(checkBox.size)
+        name = attr.getString(R.styleable.check_box_group_name).toString()
+        attr.recycle()
     }
 
-    private void init(Context context) {
-
-        setOrientation(orientation==1?VERTICAL:HORIZONTAL);
-        initializeCheckbox(context);
-
-
-    }
-
-    private void initializeCheckbox(Context context) {
-
+    private fun initializeCheckbox(context: Context) {
         if (arrayPassed) {
-            for (int i = 0; i < title.length(); i++) {
-                checkBox[i] = new CheckBox(context);
-                checkBox[i].setText(title.getString(i));
-                checkBox[i].setId(i + 1);
-                if (mCheckTextColor > 0) {
-                    checkBox[i].setTextColor(mCheckTextColor);
-                } else {
-                    checkBox[i].setTextColor(getColor(R.color.grey_text));
+            for (i in 0 until title!!.length()) {
+                checkBox[i] = CheckBox(context)
+                checkBox[i]!!.apply {
+                    this.text = title!!.getString(i)
+                    id = i + 1
+                    setTextColor(if(mCheckTextColor > 0) mCheckTextColor else getColor(R.color.grey_text))
+                    setOnClickListener(this@CheckboxGroup)
                 }
-
-                checkBox[i].setOnClickListener(this);
-                addView(checkBox[i]);
+                addView(checkBox[i])
             }
         } else {
-            checkBox[0] = new CheckBox(context);
-            checkBox[0].setText("Checkbox");
-            if (mCheckTextColor > 0) {
-                checkBox[0].setTextColor(mCheckTextColor);
-            } else {
-                checkBox[0].setTextColor(getColor(R.color.grey_text));
+            checkBox[0] = CheckBox(context)
+            checkBox[0]!!.apply {
+                this.text = name
+                id = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    View.generateViewId()
+                }else{
+                    rootView.id
+                }
+                setTextColor(if(mCheckTextColor > 0) mCheckTextColor else getColor(R.color.grey_text))
+                setOnClickListener(this@CheckboxGroup)
+
             }
-            checkBox[0].setOnClickListener(this);
-            addView(checkBox[0]);
-        }
-
-    }
-
-    private int getColor(int mCheckTextColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return mContext.getColor(mCheckTextColor);
-        } else {
-            return mContext.getResources().getColor(mCheckTextColor);
-
+            addView(checkBox[0])
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        for (int i = 0; i < checkBox.length; i++) {
-            checkedArray[i]=checkBox[i].isChecked()?1:0;
+    private fun getColor(mCheckTextColor: Int): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mContext.getColor(mCheckTextColor)
+        } else {
+            mContext.resources.getColor(mCheckTextColor)
         }
-        handleClick(view.getId());
+    }
+
+    override fun onClick(view: View) {
+        handleClick(view.id)
+        for (i in checkBox.indices) {
+            checkedArray[i] = if (checkBox[i]!!.isChecked) 1 else 0
+        }
         if (onClick != null) {
-            onClick.itemSelected(this, view.getId(),checkedArray);
+            onClick!!.itemSelected(this, view.id, checkedArray)
         }
     }
 
-    private void handleClick(int id) {
-        if(checkBox.length>1 && !multiSelect) {
-            for (int i = 0; i < checkBox.length; i++) {
-                int index = id - 1;
-                checkBox[i].setChecked(false);
+    private fun handleClick(id: Int) {
+        if (checkBox.size > 1 && !multiSelect) {
+            for (i in checkBox.indices) {
+                val index = id - 1
+                checkBox[i]!!.isChecked = false
                 if (i == index) {
-                    checkBox[i].setChecked(true);
+                    checkBox[i]!!.isChecked = true
                 }
             }
-
         }
     }
 
-
-    public void onCheckBoxListener(onSelected onClick) {
-        this.onClick = onClick;
+    fun onCheckBoxListener(onClick: OnSelected?) {
+        this.onClick = onClick
     }
 
-
-    public interface onSelected {
-        void itemSelected(CheckboxGroup group, int pos, int[] checkedArray);
+    interface OnSelected {
+        fun itemSelected(group: CheckboxGroup?, pos: Int, checkedArray: IntArray?)
     }
-
 
 }
