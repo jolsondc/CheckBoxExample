@@ -7,6 +7,7 @@
             <enum name="vertical" value="1" />
         </attr>
         <attr name="text_color" format="color" />
+        <attr name="name" format="string" />
         <attr name="checkbox_array" format="reference" />
         <attr name="multi_select" format="boolean" />
     </declare-styleable>
